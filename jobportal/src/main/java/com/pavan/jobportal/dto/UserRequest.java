@@ -17,9 +17,6 @@ public class UserRequest {
 	@NotBlank(message = "password is Required")
 	private String password;
 
-	@NotBlank(message = "ROle is Required")
-	private String role;
-
 	public String getName() {
 		return name;
 	}
@@ -42,14 +39,6 @@ public class UserRequest {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
 	}
 
 }

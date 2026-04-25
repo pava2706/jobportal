@@ -41,4 +41,24 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
 	}
+
+	// Method to handle the user not found exception
+
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ApiResponse<Object>> handleUserNotFound(UserNotFoundException ex) {
+
+		ApiResponse<Object> response = new ApiResponse<Object>(ex.getMessage(), null, HttpStatus.BAD_REQUEST.value());
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	// Method to handle the Invalid Password exception
+
+	@ExceptionHandler(InvalidPasswordException.class)
+	public ResponseEntity<ApiResponse<Object>> handleUserNotFound(InvalidPasswordException ex) {
+
+		ApiResponse<Object> response = new ApiResponse<Object>(ex.getMessage(), null, HttpStatus.BAD_REQUEST.value());
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
 }
