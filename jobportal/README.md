@@ -1,146 +1,95 @@
-# Job Portal Application 🚀
+# Job Portal Backend Application
 
-This is a Spring Boot-based Job Portal backend application developed using Java. It provides APIs for user registration with validation and proper exception handling.
-
----
-
-## 📌 Features
-
-* User Registration API
-* Duplicate Email Validation
-* Global Exception Handling
-* Standard API Response Structure
-* Input Validation using annotations
+A backend REST API project built using Spring Boot for managing a Job Portal system with JWT Authentication and Role-Based Authorization.
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Features Implemented
 
-* Java 17+
-* Spring Boot
-* Spring Data JPA
-* Hibernate
-* MySQL
-* Maven
+### 👤 User Module
+- User Registration
+  - Job Seeker Registration
+  - Recruiter Registration
+- Login Authentication using JWT
+- Password Encryption using BCrypt
+- Role-Based Access Control
+
+### 🔐 Security
+- Spring Security Integration
+- JWT Token Generation & Validation
+- Protected APIs using JWT Filter
+- Recruiter and Jobseeker Authorization
+
+### 💼 Job Module
+- Recruiter can create jobs
+- DTO Mapping implemented
+- Global API Response Structure
+- Created Timestamp for Jobs
+
+---
+
+## 🛠 Tech Stack
+
+- Java 19
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- MySQL
+- JWT
+- Maven
+
+---
+
+## 📌 API Endpoints
+
+### Authentication APIs
+
+| Method | Endpoint | Access |
+|--------|-----------|--------|
+| POST | /api/users/register/jobseeker | Public |
+| POST | /api/users/register/recruiter | Public |
+| POST | /api/users/login | Public |
+
+### Recruiter APIs
+
+| Method | Endpoint | Access |
+|--------|-----------|--------|
+| POST | /api/recruiter/createjobs | Recruiter Only |
+
+---
+
+## 🔐 Authorization
+
+- ROLE_RECRUITER → Can create jobs
+- ROLE_JOBSEEKER → Can view/apply jobs (upcoming)
 
 ---
 
 ## 📂 Project Structure
 
-src/main/java/com/pavan/jobportal
-│
-├── controller        # REST Controllers
-├── service           # Business Logic
-├── repository        # JPA Repositories
-├── entity            # Entity Classes
-├── exception         # Custom Exceptions & Global Handler
-├── response          # API Response Wrapper
-└── dto               # Request/Response DTOs
-
----
-
-## 🚀 API Endpoints
-
-### Register User
-
-* **URL:** `/api/users/register`
-* **Method:** POST
-* **Content-Type:** application/json
-
----
-
-## 📥 Sample Request
-
-```json
-{
-  "name": "Pavan",
-  "email": "pavan@gmail.com",
-  "password": "123456",
-  "role": "USER"
-}
+```text
+controller/
+service/
+repository/
+entity/
+dto/
+config/
+exception/
 ```
 
 ---
 
-## 📘 Fields Description
+## 🚧 Upcoming Features
 
-* **name** → User full name
-* **email** → Unique email (must be unique)
-* **password** → User password
-* **role** → USER / ADMIN
-
----
-
-## ✅ Success Response
-
-```json
-{
-  "message": "User Created Successfully..",
-  "data": "User created",
-  "status": 201,
-  "localDateTime": "2026-04-20T15:57:15.417929"
-}
-```
+- View All Jobs
+- Apply Job Feature
+- Resume Upload
+- Search & Filter Jobs
+- Admin Module
 
 ---
 
-## ❌ Error Response (User Already Exists)
+## 👨‍💻 Developed By
 
-```json
-{
-  "message": "User already exist with mailId:- pavan@gmail.com",
-  "data": null,
-  "status": 400,
-  "localDateTime": "2026-04-20T15:57:57.9479516"
-}
-```
-
----
-
-## ⚙️ How to Run
-
-1. Clone the repository:
-
-```
-git clone https://github.com/pava2706/jobportal.git
-```
-
-2. Navigate to project folder:
-
-```
-cd jobportal
-```
-
-3. Run the application:
-
-```
-mvn spring-boot:run
-```
-
-4. Server will start on:
-
-```
-http://localhost:8087
-```
-
----
-
-## ⚠️ Notes
-
-* Ensure MySQL is running
-* Update database credentials in `application.properties`
-* Use Postman for API testing
-
----
-
-## 📌 Future Enhancements
-
-* Login & Authentication (JWT)  
-* Job Posting APIs
-* Role-based access (Admin/User)
-* Resume Upload
-* Pagination & Filtering
-
----
-
-⭐ If you like this project, give it a star on GitHub!
+Pavankumar M K
