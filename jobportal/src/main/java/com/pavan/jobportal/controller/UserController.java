@@ -3,6 +3,7 @@ package com.pavan.jobportal.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,15 +49,17 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
-	// Api to User login
+	// Api to User login 
 
 	@PostMapping("/login")
-	public ResponseEntity<ApiResponse<?>> login(@RequestBody LoginRequest request) {
+	public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request) {
 
 		LoginResponse result = userService.loginUser(request);
 
 		ApiResponse<LoginResponse> response = new ApiResponse<>("Login Successful", result, HttpStatus.OK.value());
 
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		return ResponseEntity.ok(response);
 	}
+
+	
 }

@@ -27,6 +27,10 @@ public class UserServiceImpl implements UserService {
 
 	private JwtUtil jwtUtil;
 
+	public UserServiceImpl(JwtUtil jwtUtil) {
+		this.jwtUtil = jwtUtil;
+	}
+
 	@Override
 	public String registerUser(UserRequest request, Role role) {
 

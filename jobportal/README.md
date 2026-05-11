@@ -135,7 +135,7 @@ http://localhost:8087
 
 ## 📌 Future Enhancements
 
-* Login & Authentication (JWT)
+* Login & Authentication (JWT)  
 * Job Posting APIs
 * Role-based access (Admin/User)
 * Resume Upload

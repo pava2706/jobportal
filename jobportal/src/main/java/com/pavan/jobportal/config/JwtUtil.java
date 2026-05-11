@@ -15,29 +15,51 @@ public class JwtUtil {
 	private final String SECRET = "mysecretkeymysecretkeymysecretkey"; // min 32 chars
 	private final long EXPIRATION = 1000 * 60 * 60; // 1 hour
 
+	// 🔑 Generate signing key
 	private Key getSignKey() {
 		return Keys.hmacShaKeyFor(SECRET.getBytes());
 	}
 
+	// 🔐 Generate JWT Token
 	public String generateToken(User user) {
-		return Jwts.builder().setSubject(user.getEmail()) // Main data
-				.claim("role", user.getRole().name()).setIssuedAt(new Date())
-				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+		return Jwts.builder().setSubject(user.getEmail()) // main identity
+				.claim("role", user.getRole().name()) // custom claim
+				.setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
 				.signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
 	}
 
+	// 📧 Extract Email (Subject)
 	public String extractEmail(String token) {
-		return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody().getSubject();
+		return getClaims(token).getSubject();
 	}
 
+	// 🎭 Extract Role (NEW)
+	public String extractRole(String token) {
+		return Jwts.parserBuilder()
+	            .setSigningKey(getSignKey())
+	            .build()
+	            .parseClaimsJws(token)
+	            .getBody()
+	            .get("role", String.class); 
+	}
+
+	// 🔍 Validate Token (UPDATED with try-catch)
 	public boolean validateToken(String token, String email) {
-		return email.equals(extractEmail(token)) && !isTokenExpired(token);
+		try {
+			String extractedEmail = extractEmail(token);
+			return extractedEmail.equals(email) && !isTokenExpired(token);
+		} catch (JwtException | IllegalArgumentException e) {
+			return false;
+		}
 	}
 
+	// ⏳ Check Expiry
 	private boolean isTokenExpired(String token) {
-		Date exp = Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody()
-				.getExpiration();
+		return getClaims(token).getExpiration().before(new Date());
+	}
 
-		return exp.before(new Date());
+	// 📦 Common method to get claims (clean code)
+	private Claims getClaims(String token) {
+		return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
 	}
 }
