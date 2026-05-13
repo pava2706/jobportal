@@ -27,6 +27,14 @@ public class JwtFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
+		String path = request.getServletPath();
+
+		// Skip AI APIs
+		if (path.startsWith("/ai")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+
 		String authHeader = request.getHeader("Authorization");
 		String token = null;
 		String email = null;
@@ -40,24 +48,18 @@ public class JwtFilter extends OncePerRequestFilter {
 			email = jwtUtil.extractEmail(token);
 
 			String role = jwtUtil.extractRole(token);
-			
 
 			if (jwtUtil.validateToken(token, email)) {
 
 				List<SimpleGrantedAuthority> authorties = List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
-				// 🔥 Create Authentication object
 				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, null,
 						authorties);
 
-				// 🔐 Set authentication
 				SecurityContextHolder.getContext().setAuthentication(auth);
 			}
 		}
 
-		// ✅ Continue request
 		filterChain.doFilter(request, response);
-
 	}
-
 }
