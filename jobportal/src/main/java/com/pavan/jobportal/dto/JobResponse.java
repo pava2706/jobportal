@@ -1,5 +1,6 @@
 package com.pavan.jobportal.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class JobResponse {
@@ -9,7 +10,7 @@ public class JobResponse {
 	private String description;
 	private String company;
 	private String location;
-	private Double salary;
+	private BigDecimal salary;
 	private LocalDateTime createdAt;
 
 	public Long getId() {
@@ -52,11 +53,11 @@ public class JobResponse {
 		this.location = location;
 	}
 
-	public Double getSalary() {
+	public BigDecimal getSalary() {
 		return salary;
 	}
 
-	public void setSalary(Double salary) {
+	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
 

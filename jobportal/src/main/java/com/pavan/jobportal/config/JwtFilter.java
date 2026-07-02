@@ -30,10 +30,15 @@ public class JwtFilter extends OncePerRequestFilter {
 		String path = request.getServletPath();
 
 		// Skip AI APIs
-		if (path.startsWith("/ai")) {
-			filterChain.doFilter(request, response);
-			return;
-		}
+		if(path.startsWith("/ai")
+				   || path.startsWith("/swagger-ui")
+				   || path.startsWith("/v3"))
+				{
+				    filterChain.doFilter(
+				       request,response);
+
+				    return;
+				}
 
 		String authHeader = request.getHeader("Authorization");
 		String token = null;
@@ -45,18 +50,27 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		if (token != null) {
 
-			email = jwtUtil.extractEmail(token);
+			try {
 
-			String role = jwtUtil.extractRole(token);
+				email = jwtUtil.extractEmail(token);
+				String role = jwtUtil.extractRole(token);
 
-			if (jwtUtil.validateToken(token, email)) {
+				if (email != null && SecurityContextHolder.getContext().getAuthentication() == null
+						&& jwtUtil.validateToken(token, email)) {
 
-				List<SimpleGrantedAuthority> authorties = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+					List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
-				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, null,
-						authorties);
+					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, null,
+							authorities);
 
-				SecurityContextHolder.getContext().setAuthentication(auth);
+					SecurityContextHolder.getContext().setAuthentication(auth);
+				}
+
+			} catch (Exception e) {
+
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+				return;
 			}
 		}
 

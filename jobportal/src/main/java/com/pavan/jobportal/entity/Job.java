@@ -1,5 +1,6 @@
 package com.pavan.jobportal.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -7,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 
 @Entity
@@ -17,18 +20,25 @@ public class Job {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String title;
 
+	@Column(nullable = false)
 	private String description;
 
+	@Column(nullable = false)
 	private String company;
 
+	@Column(nullable = false)
 	private String location;
 
-	private Double salary;
+	@Column(nullable = false)
+	private BigDecimal salary;
 
 	// 🔗 Recruiter who posted job
-	private String postedBy; // store email for now
+	@ManyToOne
+	@JoinColumn(name = "recruiter_id", nullable = false)
+	private User recruiter;
 
 	@Column(updatable = false)
 	private LocalDateTime createdAt;
@@ -78,20 +88,20 @@ public class Job {
 		this.location = location;
 	}
 
-	public Double getSalary() {
+	public BigDecimal getSalary() {
 		return salary;
 	}
 
-	public void setSalary(Double salary) {
+	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
 
-	public String getPostedBy() {
-		return postedBy;
+	public User getRecruiter() {
+		return recruiter;
 	}
 
-	public void setPostedBy(String postedBy) {
-		this.postedBy = postedBy;
+	public void setRecruiter(User recruiter) {
+		this.recruiter = recruiter;
 	}
 
 	public LocalDateTime getCreatedAt() {

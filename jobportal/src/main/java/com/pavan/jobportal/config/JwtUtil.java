@@ -2,6 +2,8 @@ package com.pavan.jobportal.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.pavan.jobportal.entity.User;
@@ -12,8 +14,11 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-	private final String SECRET = "mysecretkeymysecretkeymysecretkey"; // min 32 chars
-	private final long EXPIRATION = 1000 * 60 * 60; // 1 hour
+	@Value("${jwt.secret}")
+	private String SECRET;
+
+	@Value("${jwt.expiration}")
+	private long EXPIRATION;
 
 	// 🔑 Generate signing key
 	private Key getSignKey() {
@@ -35,14 +40,10 @@ public class JwtUtil {
 
 	// 🎭 Extract Role (NEW)
 	public String extractRole(String token) {
-		return Jwts.parserBuilder()
-	            .setSigningKey(getSignKey())
-	            .build()
-	            .parseClaimsJws(token)
-	            .getBody()
-	            .get("role", String.class); 
+	    return getClaims(token)
+	            .get("role", String.class);
 	}
-
+	
 	// 🔍 Validate Token (UPDATED with try-catch)
 	public boolean validateToken(String token, String email) {
 		try {

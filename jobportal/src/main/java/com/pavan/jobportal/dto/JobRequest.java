@@ -1,5 +1,7 @@
 package com.pavan.jobportal.dto;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.*;
 
 public class JobRequest {
@@ -18,7 +20,7 @@ public class JobRequest {
 
 	@NotNull(message = "Salary is required")
 	@Positive(message = "Salary must be positive")
-	private Double salary;
+	private BigDecimal salary;
 
 	public String getTitle() {
 		return title;
@@ -52,11 +54,11 @@ public class JobRequest {
 		this.location = location;
 	}
 
-	public Double getSalary() {
+	public BigDecimal getSalary() {
 		return salary;
 	}
 
-	public void setSalary(Double salary) {
+	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
 
