@@ -1,5 +1,7 @@
 package com.pavan.jobportal.service;
 
+import java.util.List;
+
 import com.pavan.jobportal.dto.JobRequest;
 import com.pavan.jobportal.dto.JobResponse;
 
@@ -9,6 +11,6 @@ public interface JobService {
 	
 	JobResponse getJobById(Long id);
 	
-	JobResponse getAllJob();
+	List<JobResponse>getAllJob();
 
 }

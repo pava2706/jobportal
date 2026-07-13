@@ -1,5 +1,8 @@
 package com.pavan.jobportal.service.impl;
 
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,18 +65,23 @@ public class JobServiceImpl implements JobService {
 	@Override
 	public JobResponse getJobById(Long id) {
 		
-	 System.out.println(id);
-
 		Job res = jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("Requested job doesn't exist"));
 
-		System.out.println(res);
 		return mapToResponse(res);
 	}
 
 	@Override
-	public JobResponse getAllJob() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<JobResponse> getAllJob() {
+		
+	List<Job> jobs	=jobRepository.findAllByOrderByCreatedAtDesc();
+	
+	if (jobs.isEmpty()) {
+		throw new JobNotFoundException("No Jobs Available");
+	}
+	
+	return jobs.stream()
+			.map(this::mapToResponse)
+			.toList();
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.pavan.jobportal.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,19 @@ public class JobController {
 		JobResponse res = jobService.getJobById(id);
 
 		ApiResponse<JobResponse> apiResponse = new ApiResponse<JobResponse>("Job details fetched successfully", res,
+				HttpStatus.OK.value());
+
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+	}
+	
+	
+	@GetMapping("/jobs")
+	public ResponseEntity<ApiResponse<List<JobResponse>>> getAllJobs() { 
+ 
+		List<JobResponse> res = jobService.getAllJob();
+
+		ApiResponse<List<JobResponse>> apiResponse = new ApiResponse<List<JobResponse>>("All jobs fetched successfully", res,
 				HttpStatus.OK.value());
 
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
