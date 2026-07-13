@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +18,13 @@ import com.pavan.jobportal.service.JobService;
 
 @RestController
 
-@RequestMapping("/api/recruiter")
+@RequestMapping("/api")
 public class JobController {
 
 	@Autowired
 	private JobService jobService;
 
-	@PostMapping("/createjobs")
+	@PostMapping("/recruiter/createjobs")
 	public ResponseEntity<ApiResponse<JobResponse>> createJob(@RequestBody JobRequest jobRequest,
 			Authentication authentication) {
 
@@ -36,4 +38,17 @@ public class JobController {
 		return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
 
 	}
+
+	@GetMapping("/jobs/{id}")
+	public ResponseEntity<ApiResponse<JobResponse>> getJobById(@PathVariable Long id) {
+
+		JobResponse res = jobService.getJobById(id);
+
+		ApiResponse<JobResponse> apiResponse = new ApiResponse<JobResponse>("Job details fetched successfully", res,
+				HttpStatus.OK.value());
+
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+	}
+
 }

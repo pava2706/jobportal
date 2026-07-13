@@ -61,4 +61,15 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+
+	// Method to handle the JobNotfound exception
+
+	@ExceptionHandler(JobNotFoundException.class)
+	public ResponseEntity<ApiResponse<Object>> handleJobNotFound(JobNotFoundException ex) {
+
+		ApiResponse<Object> response = new ApiResponse<Object>(ex.getMessage(), null, HttpStatus.NOT_FOUND.value());
+
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+
 }
