@@ -11,6 +11,7 @@ import com.pavan.jobportal.dto.JobResponse;
 import com.pavan.jobportal.entity.Job;
 import com.pavan.jobportal.entity.User;
 import com.pavan.jobportal.exception.JobNotFoundException;
+import com.pavan.jobportal.exception.UnknownUserException;
 import com.pavan.jobportal.exception.UserNotFoundException;
 import com.pavan.jobportal.repository.JobRepository;
 import com.pavan.jobportal.repository.UserRepository;
@@ -33,10 +34,7 @@ public class JobServiceImpl implements JobService {
 		User user = userRepository.findByEmail(recruiterEmail)
 				.orElseThrow(() -> new UserNotFoundException("User not found"));
 		Job job = new Job();
-		System.out.println("Recruiter Email: " + recruiterEmail);
-		System.out.println("User ID: " + user.getId());
-		System.out.println("User Email: " + user.getEmail());
-
+		
 		job.setCompany(jobRequest.getCompany());
 		job.setDescription(jobRequest.getDescription());
 		job.setLocation(jobRequest.getLocation());
@@ -82,6 +80,34 @@ public class JobServiceImpl implements JobService {
 	return jobs.stream()
 			.map(this::mapToResponse)
 			.toList();
+	}
+
+	
+	@Override
+	public JobResponse updateJob(JobRequest jobRequest, String recruiterEmail, Long id) {
+		
+		User user = userRepository.findByEmail(recruiterEmail)
+				.orElseThrow(() -> new UserNotFoundException("User not found"));
+		
+		Job res = jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("Requested job doesn't exist"));
+
+          if(res.getRecruiter().getEmail()!= user.getEmail()) {
+        	  throw new UnknownUserException("Unauthorized User");
+          }
+          else {
+		
+		res.setCompany(jobRequest.getCompany());
+		res.setDescription(jobRequest.getDescription());
+		res.setLocation(jobRequest.getLocation());
+		res.setTitle(jobRequest.getTitle());
+		res.setSalary(jobRequest.getSalary());
+		res.setRecruiter(user);
+
+		Job savedJob = jobRepository.save(res);
+
+		return mapToResponse(savedJob);
+		
+	}
 	}
 
 }

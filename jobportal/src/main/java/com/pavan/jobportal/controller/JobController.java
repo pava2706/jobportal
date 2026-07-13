@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,18 +53,31 @@ public class JobController {
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
 	}
-	
-	
+
 	@GetMapping("/jobs")
-	public ResponseEntity<ApiResponse<List<JobResponse>>> getAllJobs() { 
- 
+	public ResponseEntity<ApiResponse<List<JobResponse>>> getAllJobs() {
+
 		List<JobResponse> res = jobService.getAllJob();
 
-		ApiResponse<List<JobResponse>> apiResponse = new ApiResponse<List<JobResponse>>("All jobs fetched successfully", res,
-				HttpStatus.OK.value());
+		ApiResponse<List<JobResponse>> apiResponse = new ApiResponse<List<JobResponse>>("All jobs fetched successfully",
+				res, HttpStatus.OK.value());
 
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
 	}
 
+	@PutMapping("/recruiter/updatejobs/{id}")
+	public ResponseEntity<ApiResponse<JobResponse>> updateJob(@RequestBody JobRequest jobRequest, @PathVariable Long id,
+			Authentication authentication) {
+
+		String recruiterEmail = authentication.getName();
+
+		JobResponse job = jobService.updateJob(jobRequest, recruiterEmail, id);
+
+		ApiResponse<JobResponse> apiResponse = new ApiResponse<JobResponse>("Job Updated successfully", job,
+				HttpStatus.OK.value());
+
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+	}
 }

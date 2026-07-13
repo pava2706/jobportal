@@ -12,5 +12,7 @@ public interface JobService {
 	JobResponse getJobById(Long id);
 	
 	List<JobResponse>getAllJob();
+	
+	JobResponse updateJob(JobRequest jobRequest, String recruiterEmail, Long id);
 
 }

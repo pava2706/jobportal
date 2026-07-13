@@ -71,5 +71,15 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
+	
+	// Method to handle the UnKnownUser exception
+
+		@ExceptionHandler(UnknownUserException.class)
+		public ResponseEntity<ApiResponse<Object>> handleUnKnownUser(UnknownUserException ex) {
+
+			ApiResponse<Object> response = new ApiResponse<Object>(ex.getMessage(), null, HttpStatus.FORBIDDEN.value());
+
+			return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+		}
 
 }
