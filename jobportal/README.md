@@ -1,96 +1,71 @@
-# 🚀 Job Portal Backend Application
+# Job Portal Backend Application
 
-A production-oriented backend REST API built with Spring Boot that simulates a real-world Job Portal platform. The application supports secure authentication, role-based authorization, recruiter job management, and is being enhanced with AI-powered features.
-
----
-
-## 📌 Project Overview
-
-This project enables:
-
-- Recruiters to register, log in, and post jobs.
-- Job Seekers to register and log in securely.
-- JWT-based authentication and authorization.
-- Secure REST APIs using Spring Security.
-- Layered architecture following backend development best practices.
-
-This project is being developed to demonstrate practical backend development skills using Java and Spring Boot.
+A backend REST API project built using Spring Boot for managing a Job Portal system with JWT Authentication and Role-Based Authorization.
 
 ---
 
-## ✨ Current Features
+## 🚀 Features Implemented
 
-### 👤 Authentication & User Management
-
-- Recruiter Registration
-- Job Seeker Registration
-- Login Authentication
-- BCrypt Password Encryption
-- JWT Token Generation
-- JWT Validation
-- Role-Based Authorization
+### 👤 User Module
+- User Registration
+  - Job Seeker Registration
+  - Recruiter Registration
+- Login Authentication using JWT
+- Password Encryption using BCrypt
+- Role-Based Access Control
 
 ---
 
-### 💼 Recruiter Module
+## 🔐 Security
+
+- Spring Security Integration
+- JWT Token Generation & Validation
+- JWT Authentication Filter
+- Recruiter and Job Seeker Authorization
+- Protected REST APIs
+
+---
+
+## 💼 Job Module
+
+### Recruiter APIs
 
 - Create Job
-- Associate Job with Recruiter
-- Automatic Created Timestamp
-- DTO-based Request & Response
-- Global Exception Handling
-- Standard API Response Structure
+- Get Job By ID
+- Get All Jobs
+- Update Job
+- Recruiter Ownership Validation (Only the job owner can update)
 
 ---
 
-### 🔒 Security
+## 📦 API Response
 
+All APIs return a standardized response format:
+
+- Message
+- Data
+- Status Code
+- Timestamp
+
+---
+
+## 🛠 Tech Stack
+
+- Java 19
+- Spring Boot
 - Spring Security
-- JWT Filter
-- Stateless Authentication
-- Protected REST APIs
-- Public & Private Endpoint Configuration
+- Spring Data JPA
+- Hibernate
+- MySQL
+- JWT Authentication
+- Maven
+- REST APIs
 
 ---
 
-## 🛠️ Tech Stack
+## 📌 API Endpoints
 
-| Technology | Version |
-|------------|---------|
-| Java | 17+ |
-| Spring Boot | 3.x |
-| Spring Security | Latest |
-| Spring Data JPA | Latest |
-| Hibernate | ORM |
-| MySQL | Database |
-| JWT | Authentication |
-| Maven | Build Tool |
-| Swagger OpenAPI | API Documentation |
-
----
-
-## 📂 Project Structure
-
-```
-src/main/java
-│
-├── config
-├── controller
-├── dto
-├── entity
-├── exception
-├── repository
-├── service
-│     └── implementation
-├── response
-└── util
-```
-
----
-
-## 📌 Implemented REST APIs
-
-### Authentication
+### Authentication APIs
 
 | Method | Endpoint | Access |
 |---------|----------|--------|
@@ -104,84 +79,51 @@ src/main/java
 
 | Method | Endpoint | Access |
 |---------|----------|--------|
-| POST | /api/recruiter/createjobs | Recruiter Only |
+| POST | /api/recruiter/createjobs | Recruiter |
+| GET | /api/recruiter/job/{id} | Recruiter |
+| GET | /api/recruiter/jobs | Recruiter |
+| PUT | /api/recruiter/job/{id} | Recruiter (Owner Only) |
 
 ---
 
-## 🔐 Authorization
+## 🔐 Authorization Rules
 
-| Role | Permissions |
-|------|-------------|
-| RECRUITER | Create Jobs |
-| JOBSEEKER | Register & Login |
+- ROLE_RECRUITER
+  - Create Jobs
+  - View Jobs
+  - Update Own Jobs
+
+- ROLE_JOBSEEKER
+  - View/Apply Jobs (Upcoming)
+
+---
+
+## 📂 Project Structure
+
+```text
+controller/
+service/
+repository/
+entity/
+dto/
+config/
+exception/
+response/
+```
 
 ---
 
 ## 🚧 Upcoming Features
 
-- View All Jobs
-- Apply for Job
+- Delete Job API
+- Apply Job
 - View Applied Jobs
-- Recruiter View Applicants
-- Resume Upload
-- Resume Download
 - Search Jobs
 - Filter Jobs
+- Resume Upload
+- Admin Module
 - Pagination
-- AI Resume Analysis (Ollama)
-- AI Interview Question Generator
-- Email Notifications
-- Docker Deployment
-
----
-
-## 📖 API Documentation
-
-Swagger UI
-
-```
-http://localhost:8087/swagger-ui/index.html
-```
-
----
-
-## ▶️ How to Run
-
-Clone the repository
-
-```bash
-git clone https://github.com/pava2706/jobportal.git
-```
-
-Navigate to the project
-
-```bash
-cd jobportal
-```
-
-Configure MySQL credentials inside:
-
-```
-application.properties
-```
-
-Run the project
-
-```bash
-mvn spring-boot:run
-```
-
----
-
-## 🎯 Future Scope
-
-- React Frontend
-- Docker
-- CI/CD Pipeline
-- Cloud Deployment
-- AI Job Recommendation
-- Resume Parsing
-- Admin Dashboard
+- Basic Frontend (React)
 
 ---
 
@@ -189,7 +131,4 @@ mvn spring-boot:run
 
 **Pavankumar M K**
 
-Java Backend Developer (Aspiring)
-
-GitHub:
-https://github.com/pava2706
+Backend Developer | Spring Boot | Java | REST APIs | JWT | MySQL
